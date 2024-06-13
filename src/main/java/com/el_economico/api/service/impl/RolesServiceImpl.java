@@ -1,27 +1,71 @@
 package com.el_economico.api.service.impl;
 
+import com.el_economico.api.model.DTO.POST.Rol;
+import com.el_economico.api.model.common.ApiResponse;
 import com.el_economico.api.model.entity.Roles;
+import com.el_economico.api.model.mapper.RolMapper;
 import com.el_economico.api.repository.RolesRepository;
 import com.el_economico.api.service.RolesService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class RolesServiceImpl implements RolesService {
-    private final RolesRepository repository;
-    private final RolesService service;
+public class RolesServiceImpl<T> implements RolesService {
 
-    public RolesServiceImpl(@Lazy RolesRepository repository, @Lazy RolesService service){
+    private final RolesRepository repository;
+    private final RolMapper mapper;
+
+    public RolesServiceImpl(@Lazy RolesRepository repository, @Lazy RolMapper mapper){
         this.repository = repository;
-        this.service = service;
+        this.mapper = mapper;
     }
 
     @Override
-    public ResponseEntity<Iterable<Roles>> getRoles() {
-        return ResponseEntity.ok().body(this.repository.findAll());
+    public ResponseEntity<ApiResponse> getRoles() {
+        List<Roles> list = this.repository.getAllProcedure();
+        List<Rol> roles = this.mapper.toRol(list);
+        List<String> msg = List.of("Registros encontrados");
+        return ResponseEntity.ok().body(new ApiResponse(HttpStatus.OK, msg, roles));
+    }
+
+    @Override
+    public ResponseEntity<ApiResponse> insertRol(Rol e) {
+        List<String> msg = List.of("Registro insertado correctamente");
+        this.repository.insertProcedure(e.getNombre(), e.getCreadoPor(), e.getEstado());
+        return ResponseEntity.ok().body(new ApiResponse(HttpStatus.CREATED, msg, null));
+    }
+    @Override
+    public ResponseEntity<ApiResponse> putRol(Rol e, int id) {
+        List<String> msg = new ArrayList<>();
+       if(this.repository.existsById(id)){
+           msg.add("Registro encontrado");
+           msg.add("Estado del registro modificado correctamente");
+           this.repository.putProcedure(e.getNombre(), e.getModificadoPor(), e.getEstado(), id);
+           return ResponseEntity.ok().body(new ApiResponse(HttpStatus.NOT_FOUND, msg, null));
+        }else{
+           msg.add("Registro no encontrado");
+           msg.add("No se pudo modificar el estado del registro");
+           return ResponseEntity.ok().body(new ApiResponse(HttpStatus.NOT_FOUND, msg, null));
+        }
+    }
+
+    @Override
+    public ResponseEntity<ApiResponse> changeStatus(Rol e, int id) {
+        List<String> msg = new ArrayList<>();
+        if(this.repository.existsById(id)){
+            msg.add("Registro encontrado");
+            msg.add("Estado del registro modificado correctamente");
+            this.repository.changeStatus(e.getModificadoPor(), e.getEstado(), id);
+            return ResponseEntity.ok().body(new ApiResponse(HttpStatus.OK, msg, null));
+        }else{
+            msg.add("Registro no encontrado");
+            msg.add("No se pudo modificar el estado del registro");
+            return ResponseEntity.ok().body(new ApiResponse(HttpStatus.NOT_FOUND, msg, null));
+        }
     }
 }

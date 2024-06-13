@@ -7,7 +7,7 @@ spring:
   main:
     allow-circular-references: true
   datasource:
-    url: "jdbc:mysql://62.72.50.154:3306/u903638193_pedidosapp?zeroDateTimeBehavior=CONVERT_TO_NULL"
+    url: "jdbc:mysql://62.72.50.154:3306/u903638193_pedidosapp?zeroDateTimeBehavior=CONVERT_TO_NULL&noAccessToProcedureBodies=true"
     username: "u903638193_grupo6"
     password: "U/llVFYG2P|9"
   jpa:

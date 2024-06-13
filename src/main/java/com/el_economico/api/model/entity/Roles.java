@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -47,12 +46,12 @@ public class Roles {
     //Relacion con usuarios
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name="id_rol")
-    @JsonManagedReference
+    @JsonBackReference
     private List<Usuario> usuarios;
 
     //Relacion con clientes
     @OneToMany
     @JoinColumn(name="id_rol")
-    @JsonManagedReference
+    @JsonBackReference
     private List<Clientes> clientes;
 }
