@@ -13,6 +13,8 @@ API_RESTFul/
 │   │   │   │   └── com/
 │   │   │   │       └── el_economico/
 │   │   │   │           └── api/
+│   │   │   │               ├── client/
+│   │   │   │               │   └── src/
 │   │   │   │               ├── controller/
 │   │   │   │               │   ├── advice/
 │   │   │   │               │   └── rest/
