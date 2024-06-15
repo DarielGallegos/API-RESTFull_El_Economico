@@ -69,6 +69,9 @@ public class Pedidos {
     @Column(name = "total", nullable = false)
     private float total;
 
+    @Column(name = "estado_pedido", nullable = false, length = 150)
+    private String estadoPedido;
+
     @Column(name="creado_por", nullable = false, length = 150, updatable = false)
     private String creado_por;
 

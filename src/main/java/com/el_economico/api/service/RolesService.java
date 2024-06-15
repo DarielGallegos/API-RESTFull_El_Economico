@@ -1,6 +1,6 @@
 package com.el_economico.api.service;
 
-import com.el_economico.api.model.DTO.POST.Rol;
+import com.el_economico.api.model.DTO.POST.RolPOST;
 import com.el_economico.api.model.common.ApiResponse;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.http.ResponseEntity;
@@ -14,13 +14,13 @@ public interface RolesService {
 
     @Transactional
     @Modifying
-    ResponseEntity<ApiResponse> insertRol(Rol e);
+    ResponseEntity<ApiResponse> insertRol(RolPOST e);
 
     @Transactional
     @Modifying
-    ResponseEntity<ApiResponse> putRol(Rol e, int id);
+    ResponseEntity<ApiResponse> putRol(RolPOST e, int id);
 
     @Transactional
     @Modifying
-    ResponseEntity<ApiResponse> changeStatus(Rol e, int id);
+    ResponseEntity<ApiResponse> changeStatus(RolPOST e, int id);
 }

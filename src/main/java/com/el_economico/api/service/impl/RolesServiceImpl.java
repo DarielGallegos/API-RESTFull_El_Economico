@@ -1,6 +1,7 @@
 package com.el_economico.api.service.impl;
 
-import com.el_economico.api.model.DTO.POST.Rol;
+import com.el_economico.api.model.DTO.POST.RolPOST;
+import com.el_economico.api.model.DTO.REQUEST.RolReq;
 import com.el_economico.api.model.common.ApiResponse;
 import com.el_economico.api.model.entity.Roles;
 import com.el_economico.api.model.mapper.RolMapper;
@@ -28,19 +29,19 @@ public class RolesServiceImpl<T> implements RolesService {
     @Override
     public ResponseEntity<ApiResponse> getRoles() {
         List<Roles> list = this.repository.getAllProcedure();
-        List<Rol> roles = this.mapper.toRol(list);
+        List<RolReq> roles = this.mapper.toRol(list);
         List<String> msg = List.of("Registros encontrados");
         return ResponseEntity.ok().body(new ApiResponse(HttpStatus.OK, msg, roles));
     }
 
     @Override
-    public ResponseEntity<ApiResponse> insertRol(Rol e) {
+    public ResponseEntity<ApiResponse> insertRol(RolPOST e) {
         List<String> msg = List.of("Registro insertado correctamente");
         this.repository.insertProcedure(e.getNombre(), e.getCreadoPor(), e.getEstado());
         return ResponseEntity.ok().body(new ApiResponse(HttpStatus.CREATED, msg, null));
     }
     @Override
-    public ResponseEntity<ApiResponse> putRol(Rol e, int id) {
+    public ResponseEntity<ApiResponse> putRol(RolPOST e, int id) {
         List<String> msg = new ArrayList<>();
        if(this.repository.existsById(id)){
            msg.add("Registro encontrado");
@@ -55,7 +56,7 @@ public class RolesServiceImpl<T> implements RolesService {
     }
 
     @Override
-    public ResponseEntity<ApiResponse> changeStatus(Rol e, int id) {
+    public ResponseEntity<ApiResponse> changeStatus(RolPOST e, int id) {
         List<String> msg = new ArrayList<>();
         if(this.repository.existsById(id)){
             msg.add("Registro encontrado");

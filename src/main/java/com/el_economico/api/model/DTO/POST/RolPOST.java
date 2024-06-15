@@ -8,7 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Rol {
+public class RolPOST {
     private String nombre;
     private String creadoPor;
     private String modificadoPor;

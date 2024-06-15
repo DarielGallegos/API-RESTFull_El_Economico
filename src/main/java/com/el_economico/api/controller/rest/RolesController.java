@@ -1,6 +1,6 @@
 package com.el_economico.api.controller.rest;
 
-import com.el_economico.api.model.DTO.POST.Rol;
+import com.el_economico.api.model.DTO.POST.RolPOST;
 import com.el_economico.api.model.common.ApiResponse;
 import com.el_economico.api.service.impl.RolesServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,19 +22,19 @@ public class RolesController<T> {
 
     @PostMapping("/")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<String> insertRol(@RequestBody Rol e){
+    public ResponseEntity<String> insertRol(@RequestBody RolPOST e){
         return this.service.insertRol(e);
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<ApiResponse> updateRol(@PathVariable("id") int id, @RequestBody Rol e){
+    public ResponseEntity<ApiResponse> updateRol(@PathVariable("id") int id, @RequestBody RolPOST e){
         return this.service.putRol(e, id);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<String> changeStatus(@PathVariable("id") int id, @RequestBody Rol e){
+    public ResponseEntity<String> changeStatus(@PathVariable("id") int id, @RequestBody RolPOST e){
         return this.service.changeStatus(e, id);
     }
 }

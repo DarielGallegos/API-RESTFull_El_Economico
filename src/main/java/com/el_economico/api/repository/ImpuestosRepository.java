@@ -15,7 +15,7 @@ public interface ImpuestosRepository extends JpaRepository<Impuesto, Integer> {
     List<Impuesto> getAll();
 
     @Procedure("impuestosInsert")
-    void impuestosInsert(@Param("i_nombre") String nombre, @Param("i_impuestos") float impuestos, @Param("i_creador_por") String creadoPor, @Param("i_estado") int estado);
+    int impuestosInsert(@Param("i_nombre") String nombre, @Param("i_impuestos") float impuestos, @Param("i_creador_por") String creadoPor, @Param("i_estado") int estado);
 
     @Procedure("impuestosPut")
     void impuestosPut(@Param("p_nombre") String nombres, @Param("p_impuestos") float impuestos, @Param("p_modificado_por") String modificadoPor, @Param("p_estado") int estado, @Param("p_id") int id);

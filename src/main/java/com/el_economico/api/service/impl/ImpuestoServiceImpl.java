@@ -38,9 +38,9 @@ public class ImpuestoServiceImpl implements ImpuestoService {
 
     @Override
     public ResponseEntity<ApiResponse> insertImpuesto(ImpuestoPOST e) {
-        this.repository.impuestosInsert(e.getNombre(), e.getImpuesto(), e.getCreadoPor(), e.getEstado());
+        int id = this.repository.impuestosInsert(e.getNombre(), e.getImpuesto(), e.getCreadoPor(), e.getEstado());
         List<String> msg = List.of("Se ha insertado correctamente");
-        return ResponseEntity.ok().body(new ApiResponse(HttpStatus.CREATED, msg, null));
+        return ResponseEntity.ok().body(new ApiResponse(HttpStatus.CREATED, msg, List.of(id)));
     }
 
     @Override

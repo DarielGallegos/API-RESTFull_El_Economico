@@ -1,14 +1,12 @@
 package com.el_economico.api.service.impl;
 
 import com.el_economico.api.client.ClientIntern;
-import com.el_economico.api.model.DTO.POST.Rol;
+import com.el_economico.api.model.DTO.POST.PedidoPOST;
 import com.el_economico.api.model.DTO.REQUEST.PedidoReq;
 import com.el_economico.api.model.common.ApiResponse;
 import com.el_economico.api.model.mapper.PedidoReqMapper;
-import com.el_economico.api.model.mapper.RolMapper;
 import com.el_economico.api.repository.PedidosRepository;
 import com.el_economico.api.service.PedidosService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +14,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static java.lang.Integer.parseInt;
+
 @Service
-public class PedidosServiceImpl<T> implements PedidosService {
+public class PedidosServiceImpl implements PedidosService {
 
     private final ClientIntern client;
     private final PedidoReqMapper mapper;
@@ -30,12 +30,22 @@ public class PedidosServiceImpl<T> implements PedidosService {
     }
 
     @Override
-    public ResponseEntity getAll() {
+    public ResponseEntity<ApiResponse> getAll() {
         List<PedidoReq> pedidos = mapper.toPedidoReq(this.repository.getAll());
-        RolMapper RolMapper = new RolMapper();
-        ApiResponse roles = client.get("/roles/");
-        List<T> list = (List<T>) List.of(pedidos, roles);
         List<String> msg = List.of("Registros encontrados");
-        return ResponseEntity.ok().body(new ApiResponse(HttpStatus.OK, msg, list));
+        return ResponseEntity.ok().body(new ApiResponse(HttpStatus.OK, msg, pedidos));
+    }
+
+    @Override
+    public ResponseEntity<ApiResponse> insertPedido(PedidoPOST e) {
+        ApiResponse response = client.post("/impuestos/", e.getImpuesto());
+        int id = parseInt(response.getData().get("content").toString().replace("[", "").replace("]", ""));
+        this.repository.pedidosInsert(e.getIdUsuario(), e.getIdCliente(), e.getIdProducto(), e.getDestino(), e.getCantidad(), e.getMonto(), id, e.getSubtotal(), e.getEnvio(), e.getTotal(), e.getEstadoPedido(), e.getCreadoPor(), e.getEstado());
+        List<String> msg = List.of("Registro no insertado");
+        if(this.repository.existsById(id)){
+            msg.set(0, "Registro insertado");
+            return ResponseEntity.badRequest().body(new ApiResponse(HttpStatus.CREATED, msg, null));
+        }
+        return ResponseEntity.ok().body(new ApiResponse(HttpStatus.NOT_ACCEPTABLE, msg, null));
     }
 }
