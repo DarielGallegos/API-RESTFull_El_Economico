@@ -9,6 +9,7 @@ import java.util.List;
 @Component
 public class PedidoReqMapper {
     public List<PedidoReq> toPedidoReq(List<Pedidos> list){
+
         return list.stream().map(this::toPedidoReq).toList();
     }
 
