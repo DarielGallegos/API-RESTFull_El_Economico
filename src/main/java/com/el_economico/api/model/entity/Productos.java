@@ -39,7 +39,7 @@ public class Productos {
 
     @Lob
     @Column(name = "foto", nullable = false, columnDefinition = "LongBlob")
-    private byte[] foto;
+    private String foto;
 
     @Column(name = "precio", nullable = false)
     private float precio;
