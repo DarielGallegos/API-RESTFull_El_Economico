@@ -10,6 +10,11 @@ spring:
     url: "jdbc:mysql://62.72.50.154:3306/u903638193_pedidosapp?zeroDateTimeBehavior=CONVERT_TO_NULL&noAccessToProcedureBodies=true"
     username: "u903638193_grupo6"
     password: "U/llVFYG2P|9"
+    hikari:
+      connection-timeout: 20000
+      maxLifeTime: 1800000
+      maximum-pool-size: 5
+      minimum-idle: 1
   jpa:
     hibernate:
       ddl-auto: update
