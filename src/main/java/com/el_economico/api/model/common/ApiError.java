@@ -7,21 +7,21 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ApiError {
-    private Date timestamp;
+public class ApiError<T> {
     private HttpStatus status;
-    private Map<String, Object> errors;
+    private int statusCode;
+    private Map<String, Object> errors = new LinkedHashMap<>();
+    private Date timestamp;
 
-    public ApiError(HttpStatus status, List<Object> err) {
-        this.init(status, err);
+    public ApiError(HttpStatus status, List<Object> err, List<T> content){
+        this.init(status, err, content);
     }
 
-    public void init(HttpStatus status, List<Object> err) {
+    public void init(HttpStatus status, List<Object> err, List<T> content){
         this.timestamp = new Date();
         this.status = status;
-        this.errors = new LinkedHashMap();
-        this.errors.put("timestamp", this.timestamp.toString());
-        this.errors.put("status", status);
+        this.statusCode = status.value();
+        this.errors.put("msg", status);
         this.errors.put("Errors", err);
     }
 }
