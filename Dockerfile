@@ -5,7 +5,7 @@ RUN mvn dependency:resolve
 COPY src ./src
 RUN mvn package -DskipTests
 
-FROM openjdk:17 AS final
+FROM openjdk:24-slim AS final
 COPY --from=build /app/target/*.jar /app.jar
 EXPOSE 14000
 MAINTAINER "Joan Gallegos"
