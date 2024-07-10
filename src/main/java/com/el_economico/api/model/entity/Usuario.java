@@ -46,7 +46,7 @@ public class Usuario {
 
     @Lob
     @Column(name = "foto", nullable = false, columnDefinition = "LongBlob")
-    private byte[] foto;
+    private String foto;
 
     @Column(name = "usuario", nullable = false, length = 150, unique = true)
     private String usuario;

@@ -21,5 +21,4 @@ public class PedidoPOST {
     private String estadoPedido;
     private String creadoPor;
     private int estado;
-    private ImpuestoPOST impuesto;
 }

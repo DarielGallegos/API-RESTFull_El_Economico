@@ -19,6 +19,9 @@ public class Pedidos {
     @Column(name = "id", nullable = false)
     private int ID;
 
+    @Column(name = "pedido_numero", nullable = false)
+    private int numPedido;
+
     @ManyToOne(
             fetch = FetchType.LAZY,
             cascade = CascadeType.ALL

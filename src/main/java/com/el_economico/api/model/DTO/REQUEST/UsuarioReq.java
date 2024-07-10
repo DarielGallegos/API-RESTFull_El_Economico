@@ -16,7 +16,7 @@ public class UsuarioReq {
     private String dni;
     private String telefono;
     private String correo;
-    private byte[] foto;
+    private String foto;
     private String usuario;
 
 }

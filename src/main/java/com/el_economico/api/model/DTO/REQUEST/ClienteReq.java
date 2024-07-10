@@ -15,7 +15,7 @@ public class ClienteReq {
     private String apellidos;
     private String correo;
     private String telefono;
-    private byte[] foto;
+    private String foto;
     private String usuario;
 
 }
