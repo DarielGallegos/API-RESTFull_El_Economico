@@ -20,6 +20,11 @@ public class ClienteController {
         return this.service.getAll();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse> getCliente(@PathVariable("id") int id){
+        return this.service.getCliente(id);
+    }
+
     @PostMapping("/")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<ApiResponse> insertCliente(@RequestBody ClientePOST e){

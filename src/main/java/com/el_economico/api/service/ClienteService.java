@@ -14,6 +14,9 @@ public interface ClienteService {
     ResponseEntity<ApiResponse> getAll();
 
     @Transactional
+    ResponseEntity<ApiResponse> getCliente(int id);
+
+    @Transactional
     @Modifying
     ResponseEntity<ApiResponse> insertCliente(ClientePOST e);
 

@@ -1,8 +1,10 @@
 package com.el_economico.api.service.impl;
 
+import ch.qos.logback.core.net.server.Client;
 import com.el_economico.api.model.DTO.POST.ClientePOST;
 import com.el_economico.api.model.DTO.REQUEST.ClienteReq;
 import com.el_economico.api.model.common.ApiResponse;
+import com.el_economico.api.model.entity.Clientes;
 import com.el_economico.api.model.mapper.ClienteMapper;
 import com.el_economico.api.repository.ClienteRepository;
 import com.el_economico.api.service.ClienteService;
@@ -12,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClienteServiceImpl implements ClienteService {
@@ -36,6 +39,23 @@ public class ClienteServiceImpl implements ClienteService {
             msg= List.of("No hay registro encontrado");
         }
         return ResponseEntity.ok().body(new ApiResponse<>(HttpStatus.OK, msg, list));
+    }
+
+    @Override
+    public ResponseEntity<ApiResponse> getCliente(int id) {
+        List<ClienteReq> list;
+        List<String> msg = new ArrayList<>();
+        if(this.repository.existsById(id)){
+            Optional<Clientes> cliente= this.repository.findById(id);
+            Clientes c= cliente.get();
+            List<Clientes> clientList = new ArrayList<>();
+            clientList.add(c);
+            list= mapper.toClientesReq(clientList);
+            msg.clear();
+            msg.add("Registro encontrado");
+            return ResponseEntity.ok().body(new ApiResponse<>(HttpStatus.OK, msg, list));
+        }
+        return ResponseEntity.badRequest().body(new ApiResponse<>(HttpStatus.BAD_REQUEST, List.of("No se ha encontrado el registro"), null));
     }
 
     @Override
