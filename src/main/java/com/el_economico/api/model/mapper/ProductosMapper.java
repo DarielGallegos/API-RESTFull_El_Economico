@@ -22,7 +22,7 @@ public class ProductosMapper {
                 .cod_producto(e.getCodProducto())
                 .id_categoria(e.getCategoria().getID())
                 .marca(e.getMarca())
-                .foto(Arrays.toString(e.getFoto().toCharArray()))
+                .foto(e.getFoto())
                 .precio(e.getPrecio())
                 .stock_min(e.getStockMin())
                 .stock_max(e.getStockMax())

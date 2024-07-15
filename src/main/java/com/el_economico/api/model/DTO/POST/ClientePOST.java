@@ -18,7 +18,7 @@ public class ClientePOST {
     private char   genero;
     private String correo;
     private String telefono;
-    private Byte[] foto;
+    private String foto;
     private String usuario;
     private String passwd;
     private int    id_rol;
