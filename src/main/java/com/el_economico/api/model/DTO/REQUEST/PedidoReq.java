@@ -10,8 +10,7 @@ import lombok.*;
 @NoArgsConstructor
 public class PedidoReq {
     private int idFactura;
-    private int idUsuario;
-    private int idCliente;
-    private int idProducto;
-    private float monto;
+    private String cliente;
+    private float total;
+    private int Estado;
 }

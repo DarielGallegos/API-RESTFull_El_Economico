@@ -2,7 +2,7 @@ package com.el_economico.api.service.impl;
 
 import com.el_economico.api.client.ClientIntern;
 import com.el_economico.api.model.DTO.POST.PedidoPOST;
-import com.el_economico.api.model.DTO.REQUEST.ImpuestoReq;
+import com.el_economico.api.model.DTO.REQUEST.CabeceraPedidoReq;
 import com.el_economico.api.model.DTO.REQUEST.PedidoReq;
 import com.el_economico.api.model.common.ApiResponse;
 import com.el_economico.api.model.mapper.PedidoReqMapper;
@@ -13,9 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import static java.lang.Integer.parseInt;
 
 @Service
 public class PedidosServiceImpl implements PedidosService {
@@ -39,15 +38,39 @@ public class PedidosServiceImpl implements PedidosService {
 
     @Override
     public ResponseEntity<ApiResponse> insertPedido(PedidoPOST e) {
-        ApiResponse response = client.get("/impuestos/");
-        List<ImpuestoReq> list = (List<ImpuestoReq>) response.getData().get("content");
-        int id = parseInt(response.getData().get("content").toString().replace("[", "").replace("]", ""));
-        this.repository.pedidosInsert(e.getIdUsuario(), e.getIdCliente(), e.getIdProducto(), e.getDestino(), e.getCantidad(), e.getMonto(), id, e.getSubtotal(), e.getEnvio(), e.getTotal(), e.getEstadoPedido(), e.getCreadoPor(), e.getEstado());
-        List<String> msg = List.of("Registro no insertado");
-        if(this.repository.existsById(id)){
-            msg.set(0, "Registro insertado");
-            return ResponseEntity.badRequest().body(new ApiResponse(HttpStatus.CREATED, msg, null));
+        try{
+            this.repository.pedidosInsert(e.getIdUsuario(), e.getIdCliente(), e.getProductos().get(0).getIdProducto(),
+                    e.getDestino(), e.getProductos().get(0).getCantidad(), e.getProductos().get(0).getMonto(),
+                    e.getImpuesto(), e.getSubtotal(), e.getEnvio(), e.getTotal(),
+                    e.getEstadoPedido(), e.getCreadoPor(), e.getEstado());
+            int id = this.repository.pedidoLastId();
+            for(int i = 1; i < e.getProductos().size(); i++){
+                this.repository.pedidosInsertC(id, e.getIdUsuario(), e.getIdCliente(), e.getProductos().get(i).getIdProducto(),
+                        e.getDestino(), e.getProductos().get(i).getCantidad(), e.getProductos().get(i).getMonto(), e.getImpuesto(), e.getSubtotal(),
+                        e.getEnvio(), e.getTotal(), e.getEstadoPedido(), e.getCreadoPor(), e.getEstado());
+            }
+            return ResponseEntity.ok().body(new ApiResponse(HttpStatus.CREATED, List.of("Registro insertado"), null));
+        }catch(Exception ex){
+            return ResponseEntity.badRequest().body(new ApiResponse(HttpStatus.NOT_ACCEPTABLE, List.of("Registro no insertado"), null));
         }
-        return ResponseEntity.ok().body(new ApiResponse(HttpStatus.NOT_ACCEPTABLE, msg, null));
+    }
+
+    @Override
+    public ResponseEntity getPedidoById(int id) {
+        List<Object[]> lista = this.repository.pedidosGetByClient(id);
+        List<CabeceraPedidoReq> listaFilter = new ArrayList<>();
+        for(int i = 0; i < lista.size(); i++){
+            CabeceraPedidoReq cabecera = new CabeceraPedidoReq();
+            cabecera.setPedido_numero((int) lista.get(i)[0]);
+            cabecera.setId_usuario((int) lista.get(i)[1]);
+            cabecera.setId_cliente((int) lista.get(i)[2]);
+            cabecera.setTotal((float) lista.get(i)[3]);
+            cabecera.setEstado_pedido((String) lista.get(i)[4]);
+            listaFilter.add(cabecera);
+        }
+        if(lista.size() > 0){
+            return ResponseEntity.ok().body(new ApiResponse(HttpStatus.OK, List.of("Registros encontrados"), listaFilter));
+        }
+        return ResponseEntity.badRequest().body(new ApiResponse(HttpStatus.NOT_FOUND, List.of("No tiene Pedidos Activos"), null));
     }
 }

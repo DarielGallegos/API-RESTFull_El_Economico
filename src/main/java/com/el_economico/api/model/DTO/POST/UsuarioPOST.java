@@ -8,14 +8,14 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-
+@Data
 public class UsuarioPOST {
-    private int    ID;
+    private int ID;
     private String nombres;
     private String apellidos;
     private String dni;
-    private Date   fecha_nac;
-    private char   genero;
+    private Date fecha_nac;
+    private char genero;
     private String correo;
     private String telefono;
     private String foto;

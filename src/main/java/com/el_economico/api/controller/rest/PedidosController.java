@@ -23,6 +23,12 @@ public class PedidosController {
         return this.service.getAll();
     }
 
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.FOUND)
+    public ResponseEntity<ApiResponse> getPedidoById(@PathVariable int id){
+        return this.service.getPedidoById(id);
+    }
+
     @PostMapping("/")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<ApiResponse> insertPedido(@RequestBody PedidoPOST e){

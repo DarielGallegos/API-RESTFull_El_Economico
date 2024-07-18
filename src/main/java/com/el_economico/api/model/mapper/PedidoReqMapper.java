@@ -16,10 +16,9 @@ public class PedidoReqMapper {
     public PedidoReq toPedidoReq(Pedidos e){
         return PedidoReq.builder()
                 .idFactura(e.getID())
-                .idUsuario(e.getUsuario().getID())
-                .idCliente(e.getCliente().getID())
-                .idProducto(e.getProductos().getID())
-                .monto(e.getMonto())
+                .cliente(e.getCliente().getNombre() + " " + e.getCliente().getApellidos())
+                .total(e.getTotal())
+                .Estado(e.getEstado())
                 .build();
     }
 }

@@ -14,4 +14,7 @@ public interface PedidosService<T> {
     @Transactional
     @Modifying
     ResponseEntity<T> insertPedido(PedidoPOST e);
+
+    @Transactional
+    ResponseEntity<T> getPedidoById(int id);
 }
