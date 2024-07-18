@@ -17,4 +17,7 @@ public interface PedidosService<T> {
 
     @Transactional
     ResponseEntity<T> getPedidoById(int id);
+
+    @Transactional
+    ResponseEntity<T> getDetallePedido(int pedidoNumero);
 }

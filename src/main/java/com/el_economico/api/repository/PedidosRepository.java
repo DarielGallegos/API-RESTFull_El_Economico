@@ -44,4 +44,7 @@ public interface PedidosRepository extends JpaRepository<Pedidos, Integer> {
 
     @Procedure("getPedidosActivos")
     List<Object[]> pedidosGetByClient(@Param("i_id_cliente") int idCliente);
+
+    @Procedure("getDetallesPedido")
+    List<Object[]> getDetallesPedido(@Param("i_pedido_numero") int pedidoNumero);
 }

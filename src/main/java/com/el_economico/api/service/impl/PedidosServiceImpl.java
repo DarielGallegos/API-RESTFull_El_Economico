@@ -62,8 +62,8 @@ public class PedidosServiceImpl implements PedidosService {
         for(int i = 0; i < lista.size(); i++){
             CabeceraPedidoReq cabecera = new CabeceraPedidoReq();
             cabecera.setPedido_numero((int) lista.get(i)[0]);
-            cabecera.setId_usuario((int) lista.get(i)[1]);
-            cabecera.setId_cliente((int) lista.get(i)[2]);
+            cabecera.setUsuario((String) lista.get(i)[1]);
+            cabecera.setCliente((String) lista.get(i)[2]);
             cabecera.setTotal((float) lista.get(i)[3]);
             cabecera.setEstado_pedido((String) lista.get(i)[4]);
             listaFilter.add(cabecera);
@@ -72,5 +72,10 @@ public class PedidosServiceImpl implements PedidosService {
             return ResponseEntity.ok().body(new ApiResponse(HttpStatus.OK, List.of("Registros encontrados"), listaFilter));
         }
         return ResponseEntity.badRequest().body(new ApiResponse(HttpStatus.NOT_FOUND, List.of("No tiene Pedidos Activos"), null));
+    }
+
+    @Override
+    public ResponseEntity getDetallePedido(int pedidoNumero) {
+        return null;
     }
 }
