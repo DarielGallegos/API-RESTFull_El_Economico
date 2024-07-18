@@ -29,6 +29,12 @@ public class PedidosController {
         return this.service.getPedidoById(id);
     }
 
+    @GetMapping("/detalle/{pedidoNumero}")
+    @ResponseStatus(HttpStatus.FOUND)
+    public ResponseEntity<ApiResponse> getDetallePedido(@PathVariable int pedidoNumero){
+        return this.service.getDetallePedido(pedidoNumero);
+    }
+
     @PostMapping("/")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<ApiResponse> insertPedido(@RequestBody PedidoPOST e){

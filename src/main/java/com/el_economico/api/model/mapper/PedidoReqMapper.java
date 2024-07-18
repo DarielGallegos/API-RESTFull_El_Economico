@@ -15,10 +15,10 @@ public class PedidoReqMapper {
 
     public PedidoReq toPedidoReq(Pedidos e){
         return PedidoReq.builder()
-                .idFactura(e.getID())
-                .cliente(e.getCliente().getNombre() + " " + e.getCliente().getApellidos())
-                .total(e.getTotal())
-                .Estado(e.getEstado())
+                .NumeroPedido(e.getNumPedido())
+                .Cliente(e.getCliente().getNombre() + " " + e.getCliente().getApellidos())
+                .Total(e.getTotal())
+                .Estado(e.getEstadoPedido())
                 .build();
     }
 }

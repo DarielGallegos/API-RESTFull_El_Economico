@@ -4,6 +4,7 @@ import com.el_economico.api.client.ClientIntern;
 import com.el_economico.api.model.DTO.POST.PedidoPOST;
 import com.el_economico.api.model.DTO.REQUEST.CabeceraPedidoReq;
 import com.el_economico.api.model.DTO.REQUEST.PedidoReq;
+import com.el_economico.api.model.DTO.REQUEST.ProductoPedidoReq;
 import com.el_economico.api.model.common.ApiResponse;
 import com.el_economico.api.model.mapper.PedidoReqMapper;
 import com.el_economico.api.repository.PedidosRepository;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 @Service
@@ -76,6 +78,32 @@ public class PedidosServiceImpl implements PedidosService {
 
     @Override
     public ResponseEntity getDetallePedido(int pedidoNumero) {
-        return null;
+        List<Object[]> list = this.repository.getDetallesPedido(pedidoNumero);
+        List<ProductoPedidoReq> listFilter = new ArrayList<>();
+        for(int i = 0; i < list.size(); i++){
+            byte[] imageByte = (byte[]) list.get(i)[4];
+            String image = Base64.getEncoder().encodeToString(imageByte);
+            ProductoPedidoReq producto = new ProductoPedidoReq().builder()
+                    .NombreProducto((String) list.get(i)[3])
+                    .Imagen(image)
+                    .Precio((float) list.get(i)[5])
+                    .Cantidad((int) list.get(i)[6])
+                    .Monto((float) list.get(i)[7])
+                    .build();
+            listFilter.add(producto);
+        }
+        PedidoReq pedido = new PedidoReq().builder()
+                .NumeroPedido((int) list.get(0)[0])
+                .Usuario((String) list.get(0)[1])
+                .Cliente((String) list.get(0)[2])
+                .Destino((String) list.get(0)[9])
+                .productos(listFilter)
+                .Total((float) list.get(0)[8])
+                .Estado((String) list.get(0)[10])
+                .build();
+
+        List<PedidoReq> listPedido = List.of(pedido);
+
+        return ResponseEntity.ok().body(new ApiResponse(HttpStatus.OK, List.of("Registros encontrados"), listPedido));
     }
 }
