@@ -39,4 +39,18 @@ public class CredencialesServiceImpl implements CredencialesService {
             }
         return ResponseEntity.ok(new ApiResponse(HttpStatus.UNAUTHORIZED, List.of("Credenciales Invalidas"), null));
     }
+
+    @Override
+    public ResponseEntity<ApiResponse> resetPassword(String email, String passwd) {
+        Query query = manager.createNativeQuery("CALL actualizarPass(:email, :passwd)");
+        query.setParameter("email", email);
+        query.setParameter("passwd", passwd);
+        if(!email.trim().isEmpty() || !passwd.trim().isEmpty()){
+            Object rawResult = query.getSingleResult();
+            if(rawResult != null){
+                return ResponseEntity.ok(new ApiResponse(HttpStatus.OK, List.of((String) rawResult), null));
+            }
+        }
+        return ResponseEntity.ok(new ApiResponse(HttpStatus.BAD_REQUEST, List.of("Datos Invalidos"), null));
+    }
 }

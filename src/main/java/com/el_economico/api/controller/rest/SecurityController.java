@@ -4,6 +4,7 @@ import com.el_economico.api.model.DTO.POST.CredencialesLogin;
 import com.el_economico.api.model.common.ApiResponse;
 import com.el_economico.api.service.impl.CredencialesServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,5 +18,11 @@ public class SecurityController {
     @PostMapping("/")
     public ResponseEntity<ApiResponse> login(@RequestBody CredencialesLogin e){
         return this.service.login(e);
+    }
+
+    @PutMapping("/")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<ApiResponse> resetPassword(@RequestParam String email, @RequestParam String passwd){
+        return this.service.resetPassword(email, passwd);
     }
 }
