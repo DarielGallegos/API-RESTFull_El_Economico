@@ -15,6 +15,7 @@ public class ProductosReq {
     private int id_categoria;
     private String marca;
     private String foto;
+    private String descripcion;
     private float precio;
     private int stock_min;
     private int stock_max;

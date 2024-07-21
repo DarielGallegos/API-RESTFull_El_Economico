@@ -37,6 +37,9 @@ public class Productos {
     @Column(name = "marca", length = 150, nullable = false)
     private String marca;
 
+    @Column(name = "descripcion", length = 500, nullable = false)
+    private String descripcion;
+
     @Lob
     @Column(name = "foto", nullable = false, columnDefinition = "LongBlob")
     private String foto;

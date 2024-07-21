@@ -47,7 +47,8 @@ public class ProductosServiceImpl implements ProductosService {
                 e.getStock_min(),
                 e.getStock_max(),
                 e.getCreado_por(),
-                e.getEstado());
+                e.getEstado(),
+                e.getDescripcion());
         List<String> msg = List.of("SE HA INSERTADO CORRECTAMENTE");
         return ResponseEntity.ok().body(new ApiResponse(HttpStatus.CREATED, msg, null));
 
@@ -65,7 +66,8 @@ public class ProductosServiceImpl implements ProductosService {
                     e.getStock_min(),
                     e.getStock_max(),
                     e.getModificado_por(),
-                    e.getEstado(), id);
+                    e.getEstado(), id,
+                    e.getDescripcion());
             return ResponseEntity.ok().body(new ApiResponse(HttpStatus.OK, List.of("Se ha actualizado correctamente."), null));
         }
         return ResponseEntity.ok().body(new ApiResponse(HttpStatus.CREATED, List.of("No se ha encontrado el regiatro"), null));

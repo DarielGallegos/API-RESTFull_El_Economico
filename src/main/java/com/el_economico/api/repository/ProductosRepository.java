@@ -24,15 +24,18 @@ public interface ProductosRepository extends JpaRepository<Productos, Integer> {
                 @Param("i_stock_min") int stock_min,
                 @Param("i_stock_max") int stock_max,
                 @Param("i_creado_por") String creado_por,
-                @Param("i_estado") int estado);
+                @Param("i_estado") int estado,
+                         @Param("i_descripcion") String descripcion);
 
     @Procedure("productosPut")
     void productosPut(@Param("p_producto") String producto, @Param("p_cod_producto") String cod_producto,
                       @Param("p_id_categoria") int id_categoria, @Param("p_marca") String marca,
-                      @Param("p_foto") String foto, @Param("p_precio") float precio,
+                      @Param("p_foto") String foto,
+                      @Param("p_precio") float precio,
                       @Param("p_stock_min") int stock_min, @Param("p_stock_max") int stock_max,
                       @Param("p_modificado_por") String modificado_por, @Param("p_estado") int estado,
-                      @Param("p_id") int id);
+                      @Param("p_id") int id,
+                      @Param("p_descripcion") String descripcion);
 
     @Procedure("productosChangeStatus")
     void productosChangeStatus( @Param("p_modificado_por") String modificado_por,

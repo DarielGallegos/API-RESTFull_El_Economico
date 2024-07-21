@@ -14,6 +14,7 @@ public class ProductosPOST {
     private String marca;
     private String foto;
     private float precio;
+    private String descripcion;
     private int stock_min;
     private int stock_max;
     private String creado_por;
