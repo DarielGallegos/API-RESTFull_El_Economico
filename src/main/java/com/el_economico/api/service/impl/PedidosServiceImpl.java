@@ -3,6 +3,7 @@ package com.el_economico.api.service.impl;
 import com.el_economico.api.client.ClientIntern;
 import com.el_economico.api.model.DTO.POST.PedidoPOST;
 import com.el_economico.api.model.DTO.REQUEST.CabeceraPedidoReq;
+import com.el_economico.api.model.DTO.REQUEST.PedidoCabeceraContactReq;
 import com.el_economico.api.model.DTO.REQUEST.PedidoReq;
 import com.el_economico.api.model.DTO.REQUEST.ProductoPedidoReq;
 import com.el_economico.api.model.common.ApiResponse;
@@ -105,5 +106,62 @@ public class PedidosServiceImpl implements PedidosService {
         List<PedidoReq> listPedido = List.of(pedido);
 
         return ResponseEntity.ok().body(new ApiResponse(HttpStatus.OK, List.of("Registros encontrados"), listPedido));
+    }
+
+    @Override
+    public ResponseEntity getPedidosUnsigned() {
+        List<Object[]> list = this.repository.getPedidosUnsigned();
+        List<CabeceraPedidoReq> listFilter = new ArrayList<>();
+        for(int i = 0; i < list.size(); i++){
+            CabeceraPedidoReq cabecera = new CabeceraPedidoReq();
+            cabecera.setPedido_numero((int) list.get(i)[0]);
+            cabecera.setUsuario((String) list.get(i)[1]);
+            cabecera.setCliente((String) list.get(i)[2]);
+            cabecera.setTotal((float) list.get(i)[3]);
+            cabecera.setEstado_pedido((String) list.get(i)[4]);
+            listFilter.add(cabecera);
+        }
+        if(listFilter.size() > 0){
+            return ResponseEntity.ok().body(new ApiResponse(HttpStatus.OK, List.of("Registros encontrados"), listFilter));
+        }
+        return ResponseEntity.badRequest().body(new ApiResponse(HttpStatus.NOT_FOUND, List.of("No tiene Pedidos sin firmar"), null));
+    }
+
+    @Override
+    public ResponseEntity getCabeceraPedido(int pedidoNumero) {
+        List<Object[]> list = this.repository.getCabeceraPedido(pedidoNumero);
+        List<PedidoCabeceraContactReq> listFilter = new ArrayList<>();
+        for(int i = 0; i < list.size(); i++){
+            PedidoCabeceraContactReq cabecera = new PedidoCabeceraContactReq();
+            cabecera.setPedidoNumero((int) list.get(i)[0]);
+            cabecera.setCliente((String) list.get(i)[1]);
+            cabecera.setTelefono((String) list.get(i)[2]);
+            cabecera.setUbicacion((String) list.get(i)[3]);
+            cabecera.setTotal((float) list.get(i)[4]);
+            listFilter.add(cabecera);
+        }
+        if(listFilter.size() > 0){
+            return ResponseEntity.ok().body(new ApiResponse(HttpStatus.OK, List.of("Registros encontrados"), listFilter));
+        }
+        return ResponseEntity.badRequest().body(new ApiResponse(HttpStatus.NOT_FOUND, List.of("No tiene Pedidos sin firmar"), null));
+    }
+
+    @Override
+    public ResponseEntity getAllPedidoForRepartidor(int idUsuario) {
+        List<Object[]> list = this.repository.getAllPedidoForRepartidor(idUsuario);
+        List<CabeceraPedidoReq> listFilter = new ArrayList<>();
+        for (Object[] objects : list) {
+            CabeceraPedidoReq cabecera = new CabeceraPedidoReq();
+            cabecera.setPedido_numero((int) objects[0]);
+            cabecera.setUsuario((String) objects[1]);
+            cabecera.setCliente((String) objects[2]);
+            cabecera.setTotal((float) objects[3]);
+            cabecera.setEstado_pedido((String) objects[4]);
+            listFilter.add(cabecera);
+        }
+        if(!listFilter.isEmpty()){
+            return ResponseEntity.ok().body(new ApiResponse(HttpStatus.OK, List.of("Registros encontrados"), listFilter));
+        }
+        return ResponseEntity.badRequest().body(new ApiResponse(HttpStatus.NOT_FOUND, List.of("No tiene Pedidos sin firmar"), null));
     }
 }

@@ -20,4 +20,13 @@ public interface PedidosService<T> {
 
     @Transactional
     ResponseEntity<T> getDetallePedido(int pedidoNumero);
+
+    @Transactional
+    ResponseEntity<T> getPedidosUnsigned();
+
+    @Transactional
+    ResponseEntity<T> getCabeceraPedido(int pedidoNumero);
+
+    @Transactional
+    ResponseEntity<T> getAllPedidoForRepartidor(int idUsuario);
 }

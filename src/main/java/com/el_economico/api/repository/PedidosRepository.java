@@ -47,4 +47,13 @@ public interface PedidosRepository extends JpaRepository<Pedidos, Integer> {
 
     @Procedure("getDetallesPedido")
     List<Object[]> getDetallesPedido(@Param("i_pedido_numero") int pedidoNumero);
+
+    @Procedure("getAllPedidosUnsigned")
+    List<Object[]> getPedidosUnsigned();
+
+    @Procedure("getCabeceraPedido")
+    List<Object[]> getCabeceraPedido(@Param("i_num_pedido") int pedidoNumero);
+
+    @Procedure("getAllPedidoForRepartidor")
+    List<Object[]> getAllPedidoForRepartidor(@Param("i_id_usuario") int idUsuario);
 }
