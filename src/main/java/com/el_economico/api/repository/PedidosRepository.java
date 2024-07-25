@@ -17,12 +17,12 @@ public interface PedidosRepository extends JpaRepository<Pedidos, Integer> {
     List<Pedidos> getAll();
 
     @Procedure("pedidosInsert")
-    void pedidosInsert( @Param("i_id_usuario") int idUsuario, @Param("i_id_cliente") int idCliente,
+    void pedidosInsert(  @Param("i_id_cliente") int idCliente,
                          @Param("i_id_producto") int idProducto, @Param("i_destino") String destino,
                          @Param("i_cantidad") int cantidad, @Param("i_monto") float monto,
                          @Param("i_id_impuesto") int idImpuesto, @Param("i_subtotal") float subtotal,
                          @Param("i_envio") float envio, @Param("i_total") float total,
-                         @Param("i_estado_pedido") String estadoPedido, @Param("i_creado_por") String creadoPor,
+                         @Param("i_creado_por") String creadoPor,
                          @Param("i_estado") int estado);
 
 
@@ -30,12 +30,12 @@ public interface PedidosRepository extends JpaRepository<Pedidos, Integer> {
     @Modifying
     @Procedure("pedidosInsertC")
     void pedidosInsertC( @Param("i_pedido_numero") int numPedido,
-                        @Param("i_id_usuario") int idUsuario, @Param("i_id_cliente") int idCliente,
+                        @Param("i_id_cliente") int idCliente,
                        @Param("i_id_producto") int idProducto, @Param("i_destino") String destino,
                        @Param("i_cantidad") int cantidad, @Param("i_monto") float monto,
                        @Param("i_id_impuesto") int idImpuesto, @Param("i_subtotal") float subtotal,
                        @Param("i_envio") float envio, @Param("i_total") float total,
-                       @Param("i_estado_pedido") String estadoPedido, @Param("i_creado_por") String creadoPor,
+                       @Param("i_creado_por") String creadoPor,
                        @Param("i_estado") int estado);
 
     @Transactional(noRollbackFor = Exception.class)
@@ -56,4 +56,16 @@ public interface PedidosRepository extends JpaRepository<Pedidos, Integer> {
 
     @Procedure("getAllPedidoForRepartidor")
     List<Object[]> getAllPedidoForRepartidor(@Param("i_id_usuario") int idUsuario);
+
+    @Procedure("pedidosChangeUser")
+    String changePedidoUser(@Param("c_pedido_numero") int pedidoNumero, @Param("c_id_usuario") int idUsuario);
+
+    @Procedure("pedidoEstadoChange")
+    void pedidoEstadoChange(@Param("c_pedido_numero") int pedidoNumero);
+
+    @Procedure("pedidosEntregados")
+    List<Object[]> pedidosEntregados();
+
+    @Procedure("pedidosPendientes")
+    List<Object[]> pedidosPendientes();
 }

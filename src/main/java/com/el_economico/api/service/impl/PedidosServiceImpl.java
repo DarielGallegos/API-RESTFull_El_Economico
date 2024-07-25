@@ -42,15 +42,15 @@ public class PedidosServiceImpl implements PedidosService {
     @Override
     public ResponseEntity<ApiResponse> insertPedido(PedidoPOST e) {
         try{
-            this.repository.pedidosInsert(e.getIdUsuario(), e.getIdCliente(), e.getProductos().get(0).getIdProducto(),
+            this.repository.pedidosInsert(e.getIdCliente(), e.getProductos().get(0).getIdProducto(),
                     e.getDestino(), e.getProductos().get(0).getCantidad(), e.getProductos().get(0).getMonto(),
                     e.getImpuesto(), e.getSubtotal(), e.getEnvio(), e.getTotal(),
-                    e.getEstadoPedido(), e.getCreadoPor(), e.getEstado());
+                    e.getCreadoPor(), e.getEstado());
             int id = this.repository.pedidoLastId();
             for(int i = 1; i < e.getProductos().size(); i++){
-                this.repository.pedidosInsertC(id, e.getIdUsuario(), e.getIdCliente(), e.getProductos().get(i).getIdProducto(),
+                this.repository.pedidosInsertC(id, e.getIdCliente(), e.getProductos().get(i).getIdProducto(),
                         e.getDestino(), e.getProductos().get(i).getCantidad(), e.getProductos().get(i).getMonto(), e.getImpuesto(), e.getSubtotal(),
-                        e.getEnvio(), e.getTotal(), e.getEstadoPedido(), e.getCreadoPor(), e.getEstado());
+                        e.getEnvio(), e.getTotal(), e.getCreadoPor(), e.getEstado());
             }
             return ResponseEntity.ok().body(new ApiResponse(HttpStatus.CREATED, List.of("Registro insertado"), null));
         }catch(Exception ex){
@@ -84,6 +84,8 @@ public class PedidosServiceImpl implements PedidosService {
         for(int i = 0; i < list.size(); i++){
             byte[] imageByte = (byte[]) list.get(i)[4];
             String image = Base64.getEncoder().encodeToString(imageByte);
+            imageByte = Base64.getDecoder().decode(image);
+            image = new String(imageByte);
             ProductoPedidoReq producto = new ProductoPedidoReq().builder()
                     .NombreProducto((String) list.get(i)[3])
                     .Imagen(image)
@@ -164,4 +166,57 @@ public class PedidosServiceImpl implements PedidosService {
         }
         return ResponseEntity.badRequest().body(new ApiResponse(HttpStatus.NOT_FOUND, List.of("No tiene Pedidos sin firmar"), null));
     }
+
+    @Override
+    public ResponseEntity pedidosChangeUser(int idPedido, int idUsuario) {
+        String msg = this.repository.changePedidoUser(idPedido, idUsuario);
+        return ResponseEntity.ok().body(new ApiResponse(HttpStatus.OK, List.of(msg), null));
+    }
+
+    @Override
+    public ResponseEntity pedidosChangeState(int idPedido) {
+        this.repository.pedidoEstadoChange(idPedido);
+        return ResponseEntity.ok().body(new ApiResponse(HttpStatus.OK, List.of("Pedido Finalizado"), null));
+    }
+
+    @Override
+    public ResponseEntity getPedidosEntregados() {
+        List<Object[]> list = this.repository.pedidosEntregados();
+        List<CabeceraPedidoReq> listFilter = new ArrayList<>();
+        for(Object[] it : list){
+            CabeceraPedidoReq cabecera = new CabeceraPedidoReq();
+            cabecera.setPedido_numero((int) it[0]);
+            cabecera.setUsuario((String) it[1]);
+            cabecera.setCliente((String) it[2]);
+            cabecera.setTotal((float) it[3]);
+            cabecera.setEstado_pedido((String) it[4]);
+            listFilter.add(cabecera);
+        }
+        if(!listFilter.isEmpty()){
+            return ResponseEntity.ok().body(new ApiResponse(HttpStatus.OK, List.of("Registros encontrados"), listFilter));
+        }
+        return ResponseEntity.badRequest().body(new ApiResponse(HttpStatus.NOT_FOUND, List.of("No tiene Pedidos sin firmar"), null));
+    }
+
+    @Override
+    public ResponseEntity getPedidosPendientes() {
+        List<Object[]> list = this.repository.pedidosPendientes();
+        List<CabeceraPedidoReq> listFilter = new ArrayList<>();
+        for(Object[] it : list){
+            CabeceraPedidoReq cabecera = new CabeceraPedidoReq();
+            cabecera.setPedido_numero((int) it[0]);
+            cabecera.setUsuario((String) it[1]);
+            cabecera.setCliente((String) it[2]);
+            cabecera.setTotal((float) it[3]);
+            cabecera.setEstado_pedido((String) it[4]);
+            listFilter.add(cabecera);
+        }
+        if(!listFilter.isEmpty()){
+            return ResponseEntity.ok().body(new ApiResponse(HttpStatus.OK, List.of("Registros encontrados"), listFilter));
+        }
+        return ResponseEntity.badRequest().body(new ApiResponse(HttpStatus.NOT_FOUND, List.of("No tiene Pedidos sin firmar"), null));
+
+    }
+
+
 }

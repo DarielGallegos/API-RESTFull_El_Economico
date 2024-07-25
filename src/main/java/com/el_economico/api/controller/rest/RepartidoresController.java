@@ -4,10 +4,7 @@ import com.el_economico.api.model.common.ApiResponse;
 import com.el_economico.api.service.impl.PedidosServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/repartidores")
@@ -28,5 +25,15 @@ public class RepartidoresController {
     @GetMapping("/cabecera/{pedidoNumero}")
     public ResponseEntity<ApiResponse> getCabeceraPedido(@PathVariable("pedidoNumero") int pedidoNumero){
         return this.service.getCabeceraPedido(pedidoNumero);
+    }
+
+    @PutMapping("/{numPedido}")
+    public ResponseEntity<ApiResponse> pedidosChangeUser(@PathVariable("numPedido") int numPedido, @RequestParam("idUsuario") int idUsuario){
+        return this.service.pedidosChangeUser(numPedido, idUsuario);
+    }
+
+    @PutMapping("/estado/{numPedido}")
+    public ResponseEntity<ApiResponse> pedidosChangeState(@PathVariable("numPedido") int numPedido){
+        return this.service.pedidosChangeState(numPedido);
     }
 }

@@ -29,4 +29,18 @@ public interface PedidosService<T> {
 
     @Transactional
     ResponseEntity<T> getAllPedidoForRepartidor(int idUsuario);
+
+    @Transactional
+    @Modifying
+    ResponseEntity<T> pedidosChangeUser(int idPedido, int idUsuario);
+
+    @Transactional
+    @Modifying
+    ResponseEntity<T> pedidosChangeState(int idPedido);
+
+    @Transactional
+    ResponseEntity<T> getPedidosEntregados();
+
+    @Transactional
+    ResponseEntity<T> getPedidosPendientes();
 }
