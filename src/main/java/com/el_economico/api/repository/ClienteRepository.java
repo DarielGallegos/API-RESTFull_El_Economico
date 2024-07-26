@@ -31,6 +31,11 @@ public interface ClienteRepository extends JpaRepository<Clientes, Integer> {
                      @Param("p_id_rol") Integer rol,@Param("p_modificado_por") String modificado_por,@Param("p_estado") Integer estado,
                      @Param("p_id") Integer id);
 
+    @Procedure("clienteNoNPass")
+    void clienteNoNPass(@Param("p_nombres") String nombres, @Param("p_apellidos") String apellidos, @Param("p_fecha_nac") Date fecha_nac,
+                        @Param("p_genero") Character genero, @Param("p_correo") String correo, @Param("p_telefono") String telefono,
+                        @Param("p_foto") String foto, @Param("p_usuario") String usuario,@Param("p_id_rol") Integer rol,
+                        @Param("p_modificado_por") String modificado_por,@Param("p_estado") Integer estado,@Param("p_id") Integer id);
 
 
     @Procedure("clientesChangeStatus")

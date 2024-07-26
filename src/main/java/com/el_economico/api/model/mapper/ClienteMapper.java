@@ -13,6 +13,8 @@ public class ClienteMapper {
     }
 
     private ClienteReq toClientesReq(Clientes e) {
+        String fechaCollect = e.getFecheNacimiento().toString().split("T")[0];
+        String fecha = fechaCollect.split(" ")[0];
         return ClienteReq.builder()
                 .id(e.getID())
                 .nombres(e.getNombre())
@@ -21,6 +23,8 @@ public class ClienteMapper {
                 .telefono(e.getTelefono())
                 .foto(e.getFoto())
                 .usuario(e.getUsuario())
+                .fechaNacimiento(fecha)
+                .genero(e.getGenero())
                 .build();
     }
 }

@@ -62,7 +62,7 @@ public class ClienteServiceImpl implements ClienteService {
     public ResponseEntity<ApiResponse> insertCliente(ClientePOST e) {
         this.repository.clientesInsert(e.getNombres(), e.getApellidos(), e.getFecha_nac(), e.getGenero(),
                                        e.getCorreo(),e.getTelefono(), e.getFoto(), e.getUsuario(),
-                                       e.getPasswd(), e.getId_rol(),e.getCreado_por(),e.getEstado());
+                                       e.getPasswd(), e.getId_rol(),e.getCreado_por(),1);
 
         return ResponseEntity.ok().body(new ApiResponse(HttpStatus.CREATED, List.of("Registro insertado exitosamente"), null));
     }
@@ -70,13 +70,19 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public ResponseEntity<ApiResponse> putCliente(ClientePOST e, int id) {
        if(this.repository.existsById(id)){
-           this.repository.clientesPut(e.getNombres(), e.getApellidos(), e.getFecha_nac(), e.getGenero(),
-                                       e.getCorreo(),e.getTelefono(), e.getFoto(), e.getUsuario(),
-                                       e.getPasswd(), e.getId_rol(),e.getModificado_por(),e.getEstado(), id);
-           return ResponseEntity.ok().body(new ApiResponse(HttpStatus.OK, List.of("Se ha actualizado el registro"), null));
+           if(e.getPasswd().isEmpty()){
+               this.repository.clienteNoNPass(e.getNombres(), e.getApellidos(), e.getFecha_nac(), e.getGenero(),
+                       e.getCorreo(),e.getTelefono(), e.getFoto(), e.getUsuario(),
+                       e.getId_rol(),e.getModificado_por(),1, id);
+                return ResponseEntity.ok().body(new ApiResponse(HttpStatus.OK, List.of("Se ha actualizado el registro"), null));
+           }else{
+               this.repository.clientesPut(e.getNombres(), e.getApellidos(), e.getFecha_nac(), e.getGenero(),
+                       e.getCorreo(),e.getTelefono(), e.getFoto(), e.getUsuario(),
+                       e.getPasswd(), e.getId_rol(),e.getModificado_por(),1, id);
+               return ResponseEntity.ok().body(new ApiResponse(HttpStatus.OK, List.of("Se ha actualizado el registro"), null));
+           }
        }
-
-        return ResponseEntity.ok().body(new ApiResponse(HttpStatus.CREATED,List.of("No se ha encontrado el registro"), null));
+        return ResponseEntity.badRequest().body(new ApiResponse(HttpStatus.NOT_FOUND,List.of("No se ha encontrado el registro"), null));
     }
 
     @Override
