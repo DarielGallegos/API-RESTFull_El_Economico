@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-el-economico
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: api-el-economico
+  template:
+    metadata:
+      labels:
+        app: api-el-economico
+    spec:
+      containers:
+        - name: api-el-economico
+          image: gcr.io/grupomovil012024/api-el-economico:latest
+          ports:
+            - containerPort: 14000
