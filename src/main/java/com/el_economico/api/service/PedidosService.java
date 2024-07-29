@@ -36,6 +36,10 @@ public interface PedidosService<T> {
 
     @Transactional
     @Modifying
+    ResponseEntity<T> pedidoFinalizado(int numPedido);
+
+    @Transactional
+    @Modifying
     ResponseEntity<T> pedidosChangeState(int idPedido);
 
     @Transactional
@@ -43,4 +47,7 @@ public interface PedidosService<T> {
 
     @Transactional
     ResponseEntity<T> getPedidosPendientes();
+    
+    @Transactional
+    ResponseEntity<T> getPedidosSValorar(int idCliente);
 }

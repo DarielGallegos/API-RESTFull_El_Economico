@@ -57,13 +57,19 @@ public interface PedidosRepository extends JpaRepository<Pedidos, Integer> {
     @Procedure("getAllPedidoForRepartidor")
     List<Object[]> getAllPedidoForRepartidor(@Param("i_id_usuario") int idUsuario);
 
+    @Procedure("getpedidoSValorar")
+    List<Object[]> getpedidoSValorar(@Param("c_id_usuario") int idUsuario);
+
     @Procedure("pedidosChangeUser")
     String changePedidoUser(@Param("c_pedido_numero") int pedidoNumero, @Param("c_id_usuario") int idUsuario);
 
-    @Procedure("pedidoEstadoChange")
+    @Procedure("pedidoEntregado")
     void pedidoEstadoChange(@Param("c_pedido_numero") int pedidoNumero);
 
-    @Procedure("pedidosEntregados")
+    @Procedure("pedidoFinalizado")
+    void pedidoFinalizado(@Param("c_pedido_numero") int pedidoNumero);
+
+    @Procedure("getpedidosEntregados")
     List<Object[]> pedidosEntregados();
 
     @Procedure("pedidosPendientes")

@@ -41,4 +41,15 @@ public class PedidosController {
         return this.service.insertPedido(e);
     }
 
+    @GetMapping("/finalizado/{numPedido}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<ApiResponse> pedidoFinalizado(@PathVariable int numPedido){
+        return this.service.pedidoFinalizado(numPedido);
+    }
+
+    @GetMapping("/entregados/{idCliente}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<ApiResponse> getPedidosSValorar(@PathVariable int idCliente){
+        return this.service.getPedidosSValorar(idCliente);
+    }
 }

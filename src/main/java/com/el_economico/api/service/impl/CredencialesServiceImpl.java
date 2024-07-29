@@ -35,6 +35,7 @@ public class CredencialesServiceImpl implements CredencialesService {
                 credenciales.setUsuario((String) rawResult[2]);
                 credenciales.setTelefono((String) rawResult[3]);
                 credenciales.setRol((String) rawResult[4]);
+                credenciales.setCorreo((String) rawResult[5]);
                 credenciales.setEmpleado(!e.getClient());
                 return ResponseEntity.ok(new ApiResponse(HttpStatus.OK, List.of("Credenciales Validas"), List.of(credenciales)));
 

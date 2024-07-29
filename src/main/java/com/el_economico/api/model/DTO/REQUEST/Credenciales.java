@@ -14,5 +14,6 @@ public class Credenciales {
     private String nombre;
     private String telefono;
     private String Rol;
+    private String correo;
     private Boolean empleado;
 }

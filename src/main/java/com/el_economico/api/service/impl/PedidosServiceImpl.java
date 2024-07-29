@@ -2,10 +2,7 @@ package com.el_economico.api.service.impl;
 
 import com.el_economico.api.client.ClientIntern;
 import com.el_economico.api.model.DTO.POST.PedidoPOST;
-import com.el_economico.api.model.DTO.REQUEST.CabeceraPedidoReq;
-import com.el_economico.api.model.DTO.REQUEST.PedidoCabeceraContactReq;
-import com.el_economico.api.model.DTO.REQUEST.PedidoReq;
-import com.el_economico.api.model.DTO.REQUEST.ProductoPedidoReq;
+import com.el_economico.api.model.DTO.REQUEST.*;
 import com.el_economico.api.model.common.ApiResponse;
 import com.el_economico.api.model.mapper.PedidoReqMapper;
 import com.el_economico.api.repository.PedidosRepository;
@@ -139,7 +136,8 @@ public class PedidosServiceImpl implements PedidosService {
             cabecera.setCliente((String) list.get(i)[1]);
             cabecera.setTelefono((String) list.get(i)[2]);
             cabecera.setUbicacion((String) list.get(i)[3]);
-            cabecera.setTotal((float) list.get(i)[4]);
+            cabecera.setCorreo((String) list.get(i)[4]);
+            cabecera.setTotal((float) list.get(i)[5]);
             listFilter.add(cabecera);
         }
         if(listFilter.size() > 0){
@@ -171,6 +169,12 @@ public class PedidosServiceImpl implements PedidosService {
     public ResponseEntity pedidosChangeUser(int idPedido, int idUsuario) {
         String msg = this.repository.changePedidoUser(idPedido, idUsuario);
         return ResponseEntity.ok().body(new ApiResponse(HttpStatus.OK, List.of(msg), null));
+    }
+
+    @Override
+    public ResponseEntity pedidoFinalizado(int numPedido) {
+        this.repository.pedidoFinalizado(numPedido);
+        return ResponseEntity.ok().body(new ApiResponse(HttpStatus.OK, List.of("Pedido Finalizado"), null));
     }
 
     @Override
@@ -216,6 +220,25 @@ public class PedidosServiceImpl implements PedidosService {
         }
         return ResponseEntity.badRequest().body(new ApiResponse(HttpStatus.NOT_FOUND, List.of("No tiene Pedidos sin firmar"), null));
 
+    }
+
+    @Override
+    public ResponseEntity getPedidosSValorar(int idCliente) {
+        List<Object[]> list = this.repository.getpedidoSValorar(idCliente);
+        List<PedidoSValorarReq> listFilter = new ArrayList<>();
+        for(Object[] it : list){
+            PedidoSValorarReq pedido = new PedidoSValorarReq();
+            pedido.setPedidoNumero((int) it[0]);
+            pedido.setUsuario((String) it[1]);
+            pedido.setCliente((String) it[2]);
+            pedido.setTotal((float) it[3]);
+            pedido.setEstado((String) it[4]);
+            listFilter.add(pedido);
+        }
+        if(!listFilter.isEmpty()){
+            return ResponseEntity.ok().body(new ApiResponse(HttpStatus.OK, List.of("Registros encontrados"), listFilter));
+        }
+        return ResponseEntity.badRequest().body(new ApiResponse(HttpStatus.NOT_FOUND, List.of("No tiene Pedidos sin firmar"), null));
     }
 
 

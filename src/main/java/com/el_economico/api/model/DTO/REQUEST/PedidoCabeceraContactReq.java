@@ -13,5 +13,6 @@ public class PedidoCabeceraContactReq {
     private String Cliente;
     private String telefono;
     private String Ubicacion;
+    private String correo;
     private float total;
 }
