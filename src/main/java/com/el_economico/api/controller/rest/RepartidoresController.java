@@ -36,4 +36,14 @@ public class RepartidoresController {
     public ResponseEntity<ApiResponse> pedidosChangeState(@PathVariable("numPedido") int numPedido){
         return this.service.pedidosChangeState(numPedido);
     }
+
+    @PutMapping("/dir/{idUsuario}")
+    public ResponseEntity<ApiResponse> setDireccionRepartidor(@PathVariable("idUsuario") int idUsuario, @RequestParam("direccion") String direccion){
+        return this.service.setDireccionRepartidor(idUsuario, direccion);
+    }
+
+    @GetMapping("/dir/{idUsuario}")
+    public ResponseEntity<ApiResponse> getDireccionRepartidor(@PathVariable("idUsuario") int idUsuario){
+        return this.service.getDireccionRepartidor(idUsuario);
+    }
 }

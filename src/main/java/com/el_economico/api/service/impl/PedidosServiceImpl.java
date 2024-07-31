@@ -100,6 +100,7 @@ public class PedidosServiceImpl implements PedidosService {
                 .productos(listFilter)
                 .Total((float) list.get(0)[8])
                 .Estado((String) list.get(0)[10])
+                .idUsuario((int) list.get(0)[11])
                 .build();
 
         List<PedidoReq> listPedido = List.of(pedido);
@@ -239,6 +240,18 @@ public class PedidosServiceImpl implements PedidosService {
             return ResponseEntity.ok().body(new ApiResponse(HttpStatus.OK, List.of("Registros encontrados"), listFilter));
         }
         return ResponseEntity.badRequest().body(new ApiResponse(HttpStatus.NOT_FOUND, List.of("No tiene Pedidos sin firmar"), null));
+    }
+
+    @Override
+    public ResponseEntity<ApiResponse> setDireccionRepartidor(int idUsuario, String direccion) {
+        this.repository.setCoordenadasRep(idUsuario, direccion);
+        return ResponseEntity.ok().body(new ApiResponse(HttpStatus.OK, List.of("Direccion Actualizada"), null));
+    }
+
+    @Override
+    public ResponseEntity<ApiResponse> getDireccionRepartidor(int idUsuario) {
+        String ubicacion = this.repository.getCoordenadasRep(idUsuario);
+        return ResponseEntity.ok().body(new ApiResponse(HttpStatus.OK, List.of("Direccion Actualizada"), List.of(ubicacion)));
     }
 
 

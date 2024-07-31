@@ -15,6 +15,7 @@ public class PedidoReq {
     private String Cliente;
     private String Usuario;
     private String Destino;
+    private int idUsuario;
     private List<ProductoPedidoReq> productos;
     private float Total;
     private String Estado;

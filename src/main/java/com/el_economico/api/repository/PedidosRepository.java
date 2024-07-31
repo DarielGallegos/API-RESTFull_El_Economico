@@ -74,4 +74,10 @@ public interface PedidosRepository extends JpaRepository<Pedidos, Integer> {
 
     @Procedure("pedidosPendientes")
     List<Object[]> pedidosPendientes();
+
+    @Procedure("setCoordenadasRep")
+    void setCoordenadasRep(@Param("u_id") int idUsuario, @Param("ubicacion") String ubicacion);
+
+    @Procedure("getCoordenadasRep")
+    String getCoordenadasRep(@Param("u_id") int idUsuario);
 }

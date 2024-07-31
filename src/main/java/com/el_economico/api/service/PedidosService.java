@@ -1,6 +1,7 @@
 package com.el_economico.api.service;
 
 import com.el_economico.api.model.DTO.POST.PedidoPOST;
+import com.el_economico.api.model.common.ApiResponse;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -50,4 +51,11 @@ public interface PedidosService<T> {
     
     @Transactional
     ResponseEntity<T> getPedidosSValorar(int idCliente);
+
+    @Transactional
+    @Modifying
+    ResponseEntity<ApiResponse> setDireccionRepartidor(int idUsuario, String direccion);
+
+    @Transactional
+    ResponseEntity<ApiResponse> getDireccionRepartidor(int idUsuario);
 }

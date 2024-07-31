@@ -41,6 +41,9 @@ public class Usuario {
     @Column(name = "telefono", nullable = false, length = 150)
     private String telefono;
 
+    @Column(name = "direccion", length = 150)
+    private String direccion;
+
     @Column(name = "correo", nullable = false, length = 150)
     private String correo;
 
